@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Heartbeat</string>
+    <string name="action_share">Share</string>
+    <string name="msg_shared">Um problema foi detectado</string>
+    <string name="title_activity_heartbeat">Heartbeat App</string>
+    <string name="ticker">Um problema no servidor foi detectado</string>
+</resources>
