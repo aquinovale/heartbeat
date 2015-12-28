@@ -26,10 +26,10 @@ public class HeartbeatService extends Service {
     }
     private final String TAG = this.getClass().getSimpleName();
 
-    private static final int INTERVAL_TIMER = 60000; //60000;
-    private static final int START_TIMER = 1000;
+    private static final int INTERVAL_TIMER = 60000 * 60; // 60 minutos;
+    private static final int START_TIMER = 60000 * 30;    // 30 minutos
 
-    //private boolean stop;
+
     private Context ctx;
     private HeartbeatNotification heartbeatNotification;
     private final IBinder mBinder = new LocalBinder();
@@ -42,17 +42,14 @@ public class HeartbeatService extends Service {
         public void run()
         {
             if(heartbeatApi.finishSuccess()){
-//            if(true){
-                Log.v(TAG, "> Problem in Server");
-                if(false){ // Status OK
-
-                }else{ // Status False
-                    if(true){ // Critico
-                        //makeNoise();
-                    }else{ // Não Critico
-                        sendMessage(heartbeatApi.getResult());
-                    }
+                Log.i(TAG, "> Problem in Server");
+                ToolsToServices.setMessage(buildMessage(heartbeatApi.getResult()));
+                if(heartbeatApi.isCritical()){ // Status Critico
+                    makeNoise(heartbeatApi.getResult());
+                }else { // Não Critico
+                    sendMessage(heartbeatApi.getResult());
                 }
+                stopSelf();
             }else{
                 if(!heartbeatApi.isRun()){
                     stopSelf();
@@ -61,25 +58,33 @@ public class HeartbeatService extends Service {
         }
     };
 
-    private void makeNoise(){
-        ToolsToServices.callAlarm(getApplicationContext());
+    private void makeNoise(Object mensagens){        ;
+        ToolsToServices.callAlarm(getApplicationContext(), buildMessage(mensagens));
     }
 
 
+    //TODO -- Sem internet fazer ação de avisar
+
     private void sendMessage(Object mensagens) {
         if(mensagens != null){
-            Message message = Message.obtain();
-            Bundle bundle = new Bundle();
 
-            bundle.putString(HeartbeatNotification.TITLE, ctx.getResources().getString(R.string.app_name));
-            bundle.putString(HeartbeatNotification.TICKER, ctx.getResources()
-                    .getString(R.string.ticker));
-            bundle.putString(HeartbeatNotification.CONTENT, mensagens.toString());
-
-            message.setData(bundle);
-
-            handler.sendMessage(message);
+            if (!ToolsToServices.isAction()){
+                handler.sendMessage(buildMessage(mensagens));
+            }
         }
+    }
+
+    private Message buildMessage(Object mensagens) {
+        Message message = Message.obtain();
+        Bundle bundle = new Bundle();
+
+        bundle.putString(HeartbeatNotification.TITLE, ctx.getResources().getString(R.string.app_name));
+        bundle.putString(HeartbeatNotification.TICKER, ctx.getResources()
+                .getString(R.string.ticker));
+        bundle.putString(HeartbeatNotification.CONTENT, mensagens.toString());
+
+        message.setData(bundle);
+        return message;
     }
 
     public class LocalBinder extends Binder
@@ -114,7 +119,7 @@ public class HeartbeatService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId)
     {
         try {
-            heartbeatApi = new HeartbeatApi();
+            heartbeatApi = new HeartbeatApi(getApplicationContext());
             timer.schedule(task, START_TIMER, INTERVAL_TIMER);
         } catch (Exception e) {
             stopSelf();

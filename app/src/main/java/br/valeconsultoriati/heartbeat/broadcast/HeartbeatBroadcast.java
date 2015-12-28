@@ -19,8 +19,10 @@ public class HeartbeatBroadcast  extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("HeartbeatBroadcast", "Service Broadcast");
+
         Intent i = new Intent(context, HeartbeatActionActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
         context.startActivity(i);
     }
 }

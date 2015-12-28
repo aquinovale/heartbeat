@@ -1,5 +1,6 @@
 package br.valeconsultoriati.heartbeat.api;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -8,6 +9,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URL;
+
+import br.valeconsultoriati.heartbeat.configurations.ToolsToServices;
 
 /**
  * Created by vinicius on 29/03/15.
@@ -22,10 +25,12 @@ public class AsyncApiCall  extends AsyncTask<Void, Void, JSONObject> implements 
 
     private URL url;
     private JSONObject result;
+    private Context ctx;
 
     private String json;
 
-    protected AsyncApiCall(URL url, String json) {
+    protected AsyncApiCall(Context ctx, URL url, String json) {
+        this.ctx = ctx;
         this.url = url;
         this.json = json;
     }
@@ -51,11 +56,16 @@ public class AsyncApiCall  extends AsyncTask<Void, Void, JSONObject> implements 
 
         this.success = false;
         try {
-            return ApiCall.doCall(this.url, this.json);
+            if(ToolsToServices.checkInternetConnection(ctx)){
+                return ApiCall.doCall(this.url, this.json);
+            }else{
+                return new JSONObject(ToolsToServices.buildJSON("Internet não está funcionando"));
+            }
+
         } catch (Resources.NotFoundException e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, "> : " + e.getMessage());
         } catch (Exception e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, "> : " + e.getMessage());
         }
         return new JSONObject();
     }
@@ -72,16 +82,17 @@ public class AsyncApiCall  extends AsyncTask<Void, Void, JSONObject> implements 
         this.run = false;
         Log.v(TAG, "> " + result);
         try {
-            this.success = Boolean.parseBoolean(result.getString("re"));
+            this.success = result.getBoolean("re");
             receiveExtraCommands(result);
         } catch (Exception e) {
-            Log.e(TAG, "Exception: "+e.getMessage());
+            Log.e(TAG, "> Exception: "+e.getMessage());
             this.success = false;
         }
     }
 
-    private void receiveExtraCommands(JSONObject result){
+    private void receiveExtraCommands(JSONObject result) throws JSONException {
         //TODO - Receive result and execute webService to url that come.
+        Log.d(TAG, "> " + result);
         this.result = result;
 
     }

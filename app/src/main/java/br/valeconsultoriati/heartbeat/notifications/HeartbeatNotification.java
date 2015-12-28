@@ -9,7 +9,6 @@ import android.os.Message;
 import android.util.Log;
 
 import br.valeconsultoriati.heartbeat.R;
-import br.valeconsultoriati.heartbeat.activities.HeartbeatActionActivity;
 
 public class HeartbeatNotification extends AbstractNotification
 {
@@ -25,7 +24,7 @@ public class HeartbeatNotification extends AbstractNotification
 
             int defaults = this.shouldVibrate() ? Notification.DEFAULT_VIBRATE : Notification.DEFAULT_LIGHTS;
             final Resources res = this.ctx.getResources();
-            Intent intent = new Intent(this.ctx, HeartbeatActionActivity.class);
+            Intent intent = new Intent("BROADCAST_SERVICES");
             intent.putExtras(message.getData());
             final Notification.Builder builder = new Notification.Builder(this.ctx)
                     .setDefaults(defaults)
@@ -35,13 +34,14 @@ public class HeartbeatNotification extends AbstractNotification
                     .setPriority(Notification.PRIORITY_HIGH)
                     .setTicker((String) message.getData().get(TICKER))
                     .setContentIntent(
-                            PendingIntent.getActivity(
+                            PendingIntent.getBroadcast(
                                     this.ctx,
                                     0,
                                     intent,
-                                    PendingIntent.FLAG_UPDATE_CURRENT, message.getData()
+                                    PendingIntent.FLAG_UPDATE_CURRENT
                             )
-                    )
+
+            )
                     .addAction(
                             R.drawable.ic_action_stat_share,
                                     res.getString(R.string.action_share),

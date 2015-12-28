@@ -9,4 +9,67 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="br.valeconsultoriati.heartbeat.activities.HeartbeatActionActivity">
 
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="Action"
+        android:id="@+id/btAction"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Company"
+        android:id="@+id/tOk"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/button" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Host"
+        android:id="@+id/tHost"
+        android:layout_below="@+id/tOk"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Service"
+        android:id="@+id/tService"
+        android:layout_below="@+id/tHost"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Criticidade"
+        android:id="@+id/tCriticidade"
+        android:layout_below="@+id/tService"
+        android:layout_alignEnd="@+id/tService" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Message"
+        android:id="@+id/tMessage"
+        android:layout_below="@+id/tCriticidade"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Data Atualizado"
+        android:id="@+id/tDtAtualizado"
+        android:layout_below="@+id/tMessage"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>
