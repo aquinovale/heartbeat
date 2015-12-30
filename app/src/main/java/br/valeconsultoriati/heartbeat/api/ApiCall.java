@@ -55,6 +55,10 @@ public class ApiCall
             if (resCode == HttpURLConnection.HTTP_OK) {
                 in = httpConn.getInputStream();
             }else{
+                if(resCode == HttpURLConnection.HTTP_INTERNAL_ERROR){
+                return "[" + ToolsToServices.buildJSON("Erro ao acessar heartbeat.valeconsultoriati.com") + "]";
+                }
+
                 //TODO -- Fazer notificacao qdo nao acessar link
             }
         }

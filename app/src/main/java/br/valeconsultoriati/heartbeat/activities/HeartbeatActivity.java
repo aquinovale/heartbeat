@@ -27,8 +27,6 @@ public class HeartbeatActivity extends AppCompatActivity {
 
         Log.d("HeartBeatActivity", "> Create MainActivity");
 
-
-
     }
 
     @Override

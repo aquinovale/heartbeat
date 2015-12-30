@@ -59,6 +59,7 @@ public class AsyncApiCall  extends AsyncTask<Void, Void, JSONObject> implements 
             if(ToolsToServices.checkInternetConnection(ctx)){
                 return ApiCall.doCall(this.url, this.json);
             }else{
+                Log.w(TAG, "> : Sem acesso a internet");
                 return new JSONObject(ToolsToServices.buildJSON("Internet não está funcionando"));
             }
 

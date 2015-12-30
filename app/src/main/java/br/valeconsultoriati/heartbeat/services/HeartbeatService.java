@@ -26,7 +26,7 @@ public class HeartbeatService extends Service {
     }
     private final String TAG = this.getClass().getSimpleName();
 
-    private static final int INTERVAL_TIMER = 60000 * 60; // 60 minutos;
+    private static final int INTERVAL_TIMER = 60000 * 30; // 60 minutos;
     private static final int START_TIMER = 60000 * 30;    // 30 minutos
 
 
@@ -122,7 +122,7 @@ public class HeartbeatService extends Service {
             heartbeatApi = new HeartbeatApi(getApplicationContext());
             timer.schedule(task, START_TIMER, INTERVAL_TIMER);
         } catch (Exception e) {
-            stopSelf();
+            Log.e(TAG, "> Exception: "+ e.getMessage());
         }
         return START_STICKY;
     }
